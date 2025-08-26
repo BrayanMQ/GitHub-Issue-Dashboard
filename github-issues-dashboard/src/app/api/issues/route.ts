@@ -6,14 +6,34 @@ export async function GET(req: NextRequest) {
   const repo = searchParams.get("repo") || "Aqua-Stark";     
 
   // Fetch to REST public API from GitHub
-  const res = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=50`
+  const issuesRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/issues?state=all&per_page=50`
   );
 
-  const data = await res.json();
+  const issuesData = await issuesRes.json();
 
-  // Filtering only issues (no PRs)
-  const issues = (Array.isArray(data) ? data : []).filter((i: any) => !i.pull_request);
+  // Get all issues and their associated PRs
+  const issues = await Promise.all((Array.isArray(issuesData) ? issuesData : [])
+    .filter((i: any) => !i.pull_request)
+    .map(async (issue: any) => {
+      // Check if there's a PR linked to this issue
+      const prRes = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/issues/${issue.number}/timeline?per_page=100`
+      );
+      const timeline = await prRes.json();
+      
+      // Find if there's a merged PR that references this issue
+      const mergedPR = Array.isArray(timeline) && timeline.find((event: any) => 
+        event.event === 'merged' && 
+        event.commit_url && 
+        event.commit_id
+      );
+
+      return {
+        ...issue,
+        merged: !!mergedPR
+      };
+    }));
 
   return NextResponse.json({
     repo: `${owner}/${repo}`,
