@@ -166,7 +166,7 @@ export default function Home() {
     if (parsed) {
       setOwner(parsed.owner)
       setRepo(parsed.repo)
-      fetchIssues()
+      alert("Now click 'Refresh' to fetch issues.")
     } else {
       alert("Invalid GitHub URL. Please use format: https://github.com/owner/repo")
     }
