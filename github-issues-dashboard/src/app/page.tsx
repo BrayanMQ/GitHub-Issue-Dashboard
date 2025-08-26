@@ -67,8 +67,8 @@ function loadFromLocalStorage<T>(key: string, defaultValue: T): T {
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"issues" | "tracking">("issues")
-  const [owner, setOwner] = useState("AquaStark")
-  const [repo, setRepo] = useState("Aqua-Stark")
+  const [owner, setOwner] = useState("")
+  const [repo, setRepo] = useState("")
   const [issues, setIssues] = useState<Issue[]>([])
   const [loading, setLoading] = useState(false)
   const [q, setQ] = useState("")
@@ -80,8 +80,8 @@ export default function Home() {
   useEffect(() => {
     const savedTrackedIssues = loadFromLocalStorage<TrackedIssue[]>("trackedIssues", [])
     const savedSelectedMonth = loadFromLocalStorage<string>("selectedMonth", getCurrentMonthYear())
-    const savedOwner = loadFromLocalStorage<string>("repoOwner", "AquaStark")
-    const savedRepo = loadFromLocalStorage<string>("repoName", "Aqua-Stark")
+    const savedOwner = loadFromLocalStorage<string>("repoOwner", "")
+    const savedRepo = loadFromLocalStorage<string>("repoName", "")
 
     setTrackedIssues(savedTrackedIssues)
     setSelectedMonth(savedSelectedMonth)

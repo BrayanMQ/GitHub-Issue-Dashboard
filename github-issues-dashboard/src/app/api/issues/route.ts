@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const owner = searchParams.get("owner") || "AquaStark"; 
-  const repo = searchParams.get("repo") || "Aqua-Stark";     
+  const owner = searchParams.get("owner"); 
+  const repo = searchParams.get("repo");     
 
   // Fetch to REST public API from GitHub
   const issuesRes = await fetch(
