@@ -6,8 +6,8 @@ import "./globals.css"
 import { ThemeProvider } from "@/app/components/theme-provider"
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "Issues Dashboard",
+  description: "Track and manage GitHub repository issues with style",
   generator: "v0.app",
 }
 
